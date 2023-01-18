@@ -3,7 +3,7 @@ const router = express.Router();
 const authControllers = require("../controllers/auth/authControllers");
 const Joi = require("joi");
 const validator = require("express-joi-validation").createValidator({});
-const auth = require("../middleware/auth");
+const verifyToken = require("../middleware/auth");
 const ElectricCars = require("../models/ElectricCars");
 
 const registerSchema = Joi.object({
@@ -29,6 +29,8 @@ router.post(
   authControllers.controllers.postLogin
 );
 
+router.post("/loginout", verifyToken, authControllers.controllers.postLogout);
+
 // Pobieranie wszystkich elementów z listy Todo
 router.get("/", (req, res) => {
   ElectricCars.find().exec((err, results) => {
@@ -39,14 +41,14 @@ router.get("/", (req, res) => {
 });
 
 // Pobieranie jednego elementu z listy Todo
-router.get("/:id", (req, res) => {
+router.get("/:id", verifyToken, (req, res) => {
   ElectricCars.findById(req.params.id)
     .then((electricCar) => res.json(electricCar))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 // Dodawanie nowego elementu do listy Todo
-router.post("/add", (req, res) => {
+router.post("/add", verifyToken, (req, res) => {
   const make = req.body.make;
   const model = req.body.model;
   const range = req.body.range;
@@ -66,7 +68,7 @@ router.post("/add", (req, res) => {
 });
 
 // Modyfikowanie elementu z listy Todo
-router.post("/update/:id", (req, res) => {
+router.post("/update/:id", verifyToken, (req, res) => {
   ElectricCars.findById(req.params.id).then((electricCar) => {
     electricCar.make = req.body.make;
     electricCar.model = req.body.model;
@@ -81,7 +83,7 @@ router.post("/update/:id", (req, res) => {
 });
 
 // test route to verify if our middleware is working
-router.get("/test", auth, (req, res) => {
+router.get("/test", verifyToken, (req, res) => {
   res.send("request passed");
 });
 

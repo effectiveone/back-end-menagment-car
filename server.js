@@ -22,13 +22,12 @@ router.get("/", (req, res) => {
 
     res.status(200).json(results);
   });
-  // .then((e) => res.json(e))
-  // .catch((err) => res.status(400).json("Error: " + err));
 });
 
 app.use("/", router);
-
+// app.delete("/logout", logout);
 app.use("/api/auth", authRoutes);
+
 const server = http.createServer(app);
 
 mongoose
