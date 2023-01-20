@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const loginAttempts = new Map();
-const loginThreshold = 5; // max number of login attempts
+const loginThreshold = 500; // max number of login attempts
 const loginBanTime = 60; // in minutes
 
 const postLogin = async (req, res) => {

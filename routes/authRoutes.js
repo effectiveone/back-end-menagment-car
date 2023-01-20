@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const authControllers = require("../controllers/auth/authControllers");
+const annoucmentControllers = require("../controllers/annoucment/annoucmentControllers");
 const Joi = require("joi");
 const validator = require("express-joi-validation").createValidator({});
 const verifyToken = require("../middleware/auth");
 const ElectricCars = require("../models/ElectricCars");
+const mongoose = require("mongoose");
+const sanitize = require("mongo-sanitize");
+const xss = require("xss-filters");
+
+const bodyParser = require("body-parser");
+const app = express();
+app.use(bodyParser.json());
 
 const registerSchema = Joi.object({
   username: Joi.string().min(3).max(12).required(),
@@ -17,6 +25,9 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).max(12).required(),
   mail: Joi.string().email().required(),
 });
+
+router.post("/add-announcement", annoucmentControllers.addAnnouncement);
+router.get("/get-announcements", annoucmentControllers.getAnnouncements);
 
 router.post(
   "/register",
@@ -49,10 +60,10 @@ router.get("/:id", verifyToken, (req, res) => {
 
 // Dodawanie nowego elementu do listy Todo
 router.post("/add", verifyToken, (req, res) => {
-  const make = req.body.make;
-  const model = req.body.model;
-  const range = req.body.range;
-  const price = req.body.price;
+  const make = xss.inHTMLData(sanitize(req.body.make));
+  const model = xss.inHTMLData(sanitize(req.body.model));
+  const range = xss.inHTMLData(sanitize(req.body.range));
+  const price = xss.inHTMLData(sanitize(req.body.price));
 
   const newElectricCar = new ElectricCars({
     make,
@@ -63,7 +74,7 @@ router.post("/add", verifyToken, (req, res) => {
 
   newElectricCar
     .save()
-    .then(() => res.json("Todo added!"))
+    .then(() => res.status(200).json("You have successfully saved the data "))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
@@ -77,7 +88,7 @@ router.post("/update/:id", verifyToken, (req, res) => {
 
     electricCar
       .save()
-      .then(() => res.json("Todo updated!"))
+      .then(() => res.status(200).json("You have successfully saved the data "))
       .catch((err) => res.status(400).json("Error: " + err));
   });
 });
