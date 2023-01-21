@@ -3,6 +3,8 @@ const router = express.Router();
 const authControllers = require("../controllers/auth/authControllers");
 const annoucmentControllers = require("../controllers/annoucment/annoucmentControllers");
 const taskController = require("../controllers/task/taskControllers");
+const walletControllers = require("../controllers/wallet/walletControllers");
+
 const Joi = require("joi");
 const validator = require("express-joi-validation").createValidator({});
 const verifyToken = require("../middleware/auth");
@@ -27,9 +29,11 @@ const loginSchema = Joi.object({
   mail: Joi.string().email().required(),
 });
 
+//Annoucment Routes
 router.post("/add-announcement", annoucmentControllers.addAnnouncement);
 router.get("/get-announcements", annoucmentControllers.getAnnouncements);
 
+//Logins/User Routes
 router.post(
   "/register",
   validator.body(registerSchema),
@@ -42,6 +46,11 @@ router.post(
 );
 router.post("/loginout", verifyToken, authControllers.controllers.postLogout);
 router.put("/users/:userId", authControllers.updateUser);
+
+// Wallet routes
+router.post("/addCoins", walletControllers.addCoin);
+router.post("/subtractCoins", walletControllers.subtractCoins);
+router.get("/getWallet", walletControllers.getWallet);
 
 // Task routes
 router.post("/tasks", taskController.createTask);
