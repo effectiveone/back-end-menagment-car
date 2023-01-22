@@ -55,8 +55,10 @@ router.get("/getWallet", walletControllers.getWallet);
 // Task routes
 router.post("/tasks", taskController.createTask);
 router.get("/tasks", taskController.getAllTasks);
+router.get("/getBacklogTasks", taskController.getBacklogTasks);
+router.get("/getMyTasks", taskController.getMyTasks);
 router.get("/tasks/:id", taskController.getTaskById);
-router.patch("/tasks/:id", taskController.updateTask);
+router.put("/tasks/:id", taskController.updateTask);
 router.delete("/tasks/:id", taskController.deleteTask);
 
 // Pobieranie wszystkich elementów z listy Todo

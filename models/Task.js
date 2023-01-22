@@ -15,6 +15,14 @@ const taskSchema = new Schema({
     required: true,
   },
   coinsToEarn: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  responsivePerson: {
     type: String,
     required: true,
   },

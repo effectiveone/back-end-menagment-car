@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const walletSchema = new Schema({
-  userId: { type: String, required: true },
-  coinBalance: { type: Number, default: 10 },
+  mail: { type: String, required: true },
+  coins: { type: Number, default: 10 },
   lastCoinReceived: { type: Date },
 });
 
