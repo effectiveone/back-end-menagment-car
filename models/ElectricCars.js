@@ -14,6 +14,16 @@ const ElectricCarsSchema = new Schema({
   price: {
     type: String,
   },
+  reservations: [
+    {
+      date: {
+        type: Date,
+      },
+      mail: {
+        type: String,
+      },
+    },
+  ],
 });
 
 module.exports = ElectricCars = mongoose.model(
