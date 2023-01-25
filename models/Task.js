@@ -24,7 +24,6 @@ const taskSchema = new Schema({
   },
   responsivePerson: {
     type: String,
-    required: true,
   },
   createdAt: {
     type: Date,

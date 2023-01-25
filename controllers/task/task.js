@@ -23,17 +23,19 @@ exports.createTask = (req, res) => {
   const time = xss.inHTMLData(sanitize(req.body.time));
   const coinsToEarn = xss.inHTMLData(sanitize(req.body.coinsToEarn));
   // Create a new Task
-  const task = new Task({
+  const tasks = {
     title,
     description,
     time,
     coinsToEarn,
     responsivePerson: null,
     status: "backlog",
-  });
+  };
+
+  const newTask = new Task(tasks);
 
   // Save Task in the database
-  task
+  newTask
     .save()
     .then(() => res.status(200).json("You have successfully saved the data "))
     .catch((err) => {
