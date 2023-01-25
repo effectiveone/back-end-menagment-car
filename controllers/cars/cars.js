@@ -5,6 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 const xss = require("xss-filters");
 const sanitize = require("mongo-sanitize");
+const mongoose = require("mongoose");
 
 const electricCarsController = {
   // Pobieranie wszystkich elementów z listy Todo
@@ -36,20 +37,35 @@ const electricCarsController = {
     const model = xss.inHTMLData(sanitize(req.body.model));
     const range = xss.inHTMLData(sanitize(req.body.range));
     const price = xss.inHTMLData(sanitize(req.body.price));
-    const reservations = xss.inHTMLData(sanitize(req.body.reservations));
+    // const reservations = xss.inHTMLData(sanitize(req.body.reservations));
 
-    const newElectricCar = new ElectricCars({
+    const reservations = [
+      {
+        date: "2000-01-24T06:48:59Z",
+      },
+      {
+        date: "2000-02-24T06:48:59Z",
+      },
+      {
+        date: "2000-03-24T06:48:59Z",
+      },
+    ];
+
+    const newVehicle = {
       make,
       model,
       range,
       price,
       reservations,
-    });
+    };
+
+    console.log(newVehicle);
+    const newElectricCar = new ElectricCars(newVehicle);
 
     newElectricCar
       .save()
       .then(() => res.status(200).json("You have successfully saved the data "))
-      .catch((err) => res.status(400).json("Error: " + err));
+      .catch((err) => res.status(400).send(newVehicle));
   },
 
   // Modyfikowanie elementu z listy Todo

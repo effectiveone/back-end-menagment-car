@@ -19,9 +19,6 @@ const ElectricCarsSchema = new Schema({
       date: {
         type: Date,
       },
-      mail: {
-        type: String,
-      },
     },
   ],
 });
