@@ -234,7 +234,7 @@ exports.subtractCoins = (req, res, next) => {
         { mail: req.body.mail },
         { $push: { bankingOperations: newOperation } },
         { new: true }
-      ).exec();
+      );
 
       const newReservation = {
         title: req.body.title,
@@ -248,9 +248,9 @@ exports.subtractCoins = (req, res, next) => {
         { mail: req.body.mail },
         { $push: { MyReservations: newReservation } },
         { new: true }
-      ).exec();
+      );
 
-      const savePromise = wallet.save().exec();
+      const savePromise = wallet.save();
 
       Promise.all([updatePromise, savePromise, updateReservations])
         .then((results) => {

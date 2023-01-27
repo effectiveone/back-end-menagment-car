@@ -71,28 +71,34 @@ const electricCarsController = {
   // Modyfikowanie elementu z listy Todo
   updateElectricCar: (req, res) => {
     ElectricCars.findOne({ _id: req.params.id }, (err, electricCar) => {
-      if (err) return res.status(400).json("Error: " + err);
+      console.log("electricCar", electricCar);
+      console.log("electricCar err", err);
 
+      if (err) return res.status(400).json("Error: " + err);
       let update;
+      if (!electricCar) {
+        return res.status(400).json("Error: electric car not found" + err);
+      }
       if (!electricCar.reservations) {
         update = {
           $set: {
-            reservations: [{ date: req.body.date, mail: req.body.mail }],
+            reservations: [{ date: req.body.date }],
           },
         };
       } else {
         update = {
           $push: {
-            reservations: { date: req.body.date, mail: req.body.mail },
+            reservations: { date: req.body.date },
           },
         };
       }
-
       ElectricCars.findOneAndUpdate(
         { _id: req.params.id },
         update,
         { new: true },
         (err, electricCar) => {
+          console.log(err);
+          console.log(electricCar);
           if (err) return res.status(400).json("Error: " + err);
           res.status(200).json("You have successfully updated the data ");
         }
